@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"runtime"
-	"time"
+	//"time"
 )
 
 func varint(integer uint64) []byte {
@@ -93,13 +93,14 @@ func main() {
 	done := make(chan bool, nprocs)
 	shutdown := false
 
-	t0 := time.Now()
+	//t0 := time.Now()
 	for ; i < uint64(nprocs); i++ {
 		go scan(i*slice, i*slice+slice, target, payload_hash, recv, done, &shutdown)
 	}
 	nonce := <-recv
-	t1 := time.Now()
-	fmt.Printf("Payload size %d bytes, Nonce %d, Time %v\n", len(payload), nonce, t1.Sub(t0))
+	//t1 := time.Now()
+	//fmt.Printf("Payload size %d bytes, Nonce %d, Time %v\n", len(payload), nonce, t1.Sub(t0))
+	fmt.Printf("%d", nonce)
 
 	shutdown = true
 	for i = 0; i < uint64(nprocs); i++ {

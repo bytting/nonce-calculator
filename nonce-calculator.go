@@ -58,17 +58,14 @@ func varint(integer uint64) []byte {
 
 func scan(offset_start, offset_end, target uint64, payload_hash []byte, out chan<- uint64, done chan<- bool, shutdown *bool) {
 
-	var trials uint64 = 18446744073709551615
-	var nonce uint64 = offset_start
+	var nonce, trials uint64 = offset_start, 18446744073709551615
 	h1, h2 := sha512.New(), sha512.New()
 
 	for trials > target {
-		if *shutdown {
-			done <- true
-			return
-		}
+
 		nonce++
-		if nonce > offset_end {
+		if *shutdown || nonce > offset_end {
+			done <- true
 			return
 		}
 		b := varint(nonce)
